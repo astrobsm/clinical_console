@@ -1,0 +1,30 @@
+// Mock for HTMLCanvasElement.getContext in Jest
+global.HTMLCanvasElement.prototype.getContext = () => {
+  return {
+    fillRect: () => {},
+    clearRect: () => {},
+    getImageData: () => { return { data: [] }; },
+    putImageData: () => {},
+    createImageData: () => [],
+    setTransform: () => {},
+    drawImage: () => {},
+    getTransform: () => { return { a:1, b:0, c:0, d:1, e:0, f:0 }; },
+    resetTransform: () => {},
+    scale: () => {},
+    rotate: () => {},
+    translate: () => {},
+    save: () => {},
+    restore: () => {},
+    beginPath: () => {},
+    moveTo: () => {},
+    lineTo: () => {},
+    closePath: () => {},
+    stroke: () => {},
+    arc: () => {},
+    fill: () => {},
+    measureText: () => { return { width: 0 }; },
+    transform: () => {},
+    rect: () => {},
+    clip: () => {},
+  };
+};

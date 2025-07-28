@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Flask Server",
+      "type": "shell",
+      "command": "flask run",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Install Requirements",
+      "type": "shell",
+      "command": "pip install -r requirements.txt",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "DB Migrate",
+      "type": "shell",
+      "command": "flask db migrate",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "DB Upgrade",
+      "type": "shell",
+      "command": "flask db upgrade",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

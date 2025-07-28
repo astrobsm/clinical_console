@@ -1,0 +1,23 @@
+// Partial food composition table for Nigeria (example, expand as needed)
+export const foodTable = [
+  { name: 'Rice (cooked)', kcal: 130, protein: 2.7, portion: '1 cup (158g)' },
+  { name: 'Beans (cooked)', kcal: 240, protein: 15, portion: '1 cup (170g)' },
+  { name: 'Yam (boiled)', kcal: 118, protein: 1.5, portion: '100g' },
+  { name: 'Plantain (boiled)', kcal: 116, protein: 1.3, portion: '100g' },
+  { name: 'Chicken (cooked)', kcal: 239, protein: 27, portion: '100g' },
+  { name: 'Egg', kcal: 68, protein: 6, portion: '1 large' },
+  { name: 'Fish (tilapia, cooked)', kcal: 128, protein: 26, portion: '100g' },
+  { name: 'Efo riro (vegetable soup)', kcal: 90, protein: 3, portion: '1 cup (200g)' },
+  { name: 'Moi Moi', kcal: 210, protein: 12, portion: '1 wrap (200g)' },
+  { name: 'Pap (ogi, cooked)', kcal: 55, protein: 1, portion: '1 cup (250g)' },
+  { name: 'Stew (tomato, oil, meat)', kcal: 150, protein: 5, portion: '1 cup (200g)' },
+  { name: 'Garri (eba, cooked)', kcal: 350, protein: 1, portion: '1 cup (250g)' },
+  { name: 'Okra soup', kcal: 80, protein: 2, portion: '1 cup (200g)' },
+  { name: 'Fufu (cassava, cooked)', kcal: 180, protein: 1, portion: '100g' },
+  { name: 'Beef (cooked)', kcal: 250, protein: 26, portion: '100g' },
+  { name: 'Milk (liquid, whole)', kcal: 61, protein: 3.2, portion: '100ml' },
+  { name: 'Groundnut', kcal: 567, protein: 25, portion: '100g' },
+  { name: 'Sweet potato (boiled)', kcal: 86, protein: 1.6, portion: '100g' },
+  { name: 'Amala (yam flour, cooked)', kcal: 180, protein: 2, portion: '100g' },
+  { name: 'Egusi soup', kcal: 200, protein: 8, portion: '1 cup (200g)' },
+];

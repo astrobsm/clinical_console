@@ -1,0 +1,36 @@
+.role-select-label {
+  font-weight: 500;
+  color: #0a2342;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.role-select-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.role-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #00b4d8;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8f9fa;
+  color: #0a2342;
+  appearance: none;
+  outline: none;
+  transition: border 0.2s;
+  box-shadow: 0 2px 8px rgba(0,180,216,0.07);
+}
+.role-select:focus {
+  border-color: #38b000;
+  background: #e0f7fa;
+}
+.role-select-arrow {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1.2rem;
+  color: #00b4d8;
+}

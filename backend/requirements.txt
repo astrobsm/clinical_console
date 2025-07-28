@@ -1,0 +1,21 @@
+Flask
+Flask-RESTful
+Flask-SQLAlchemy
+SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+Flask-JWT-Extended
+Flask-Cors
+python-dotenv
+
+# For Swagger UI
+flask-swagger-ui
+
+# For password hashing and security (if not already present in your code, recommended for user auth)
+Werkzeug
+
+# For Alembic migrations (Flask-Migrate depends on this, but explicit is better)
+alembic
+
+# For JSON/YAML parsing (if you use YAML for OpenAPI specs)
+PyYAML

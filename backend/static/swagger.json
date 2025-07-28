@@ -1,0 +1,169 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Plastic Surgery EMR API",
+    "version": "1.0.0",
+    "description": "Full OpenAPI spec for all EMR endpoints."
+  },
+  "servers": [
+    { "url": "http://localhost:5000/api" }
+  ],
+  "paths": {
+    "/patients": {
+      "get": { "summary": "Get all patients", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of patients", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Patient" } } } } } } } },
+      "post": { "summary": "Create a new patient", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Patient" } } } }, "responses": { "201": { "description": "Patient created" } } }
+    },
+    "/clinical": {
+      "get": { "summary": "Get all clinical evaluations", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of evaluations", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ClinicalEvaluation" } } } } } } } },
+      "post": { "summary": "Create a clinical evaluation", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClinicalEvaluation" } } } }, "responses": { "201": { "description": "Evaluation created" } } }
+    },
+    "/diagnosis": {
+      "get": { "summary": "Get all diagnoses", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of diagnoses", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Diagnosis" } } } } } } } },
+      "post": { "summary": "Create a diagnosis", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Diagnosis" } } } }, "responses": { "201": { "description": "Diagnosis created" } } }
+    },
+    "/treatment": {
+      "get": { "summary": "Get all treatment plans", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of treatment plans", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TreatmentPlan" } } } } } } } },
+      "post": { "summary": "Create a treatment plan", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TreatmentPlan" } } } }, "responses": { "201": { "description": "Treatment plan created" } } }
+    },
+    "/lab-investigations": {
+      "get": { "summary": "Get all lab investigations", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of lab investigations", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/LabInvestigation" } } } } } } } },
+      "post": { "summary": "Create a lab investigation", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LabInvestigation" } } } }, "responses": { "201": { "description": "Lab investigation created" } } }
+    },
+    "/imaging-investigations": {
+      "get": { "summary": "Get all imaging investigations", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of imaging investigations", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ImagingInvestigation" } } } } } } } },
+      "post": { "summary": "Create an imaging investigation", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ImagingInvestigation" } } } }, "responses": { "201": { "description": "Imaging investigation created" } } }
+    },
+    "/wound-care-plans": {
+      "get": { "summary": "Get all wound care plans", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of wound care plans", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/WoundCarePlan" } } } } } } } },
+      "post": { "summary": "Create a wound care plan", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WoundCarePlan" } } } }, "responses": { "201": { "description": "Wound care plan created" } } }
+    },
+    "/surgery-bookings": {
+      "get": { "summary": "Get all surgery bookings", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of surgery bookings", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/SurgeryBooking" } } } } } } } },
+      "post": { "summary": "Create a surgery booking", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SurgeryBooking" } } } }, "responses": { "201": { "description": "Surgery booking created" } } }
+    },
+    "/appointments": {
+      "get": { "summary": "Get all appointments", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of appointments", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Appointment" } } } } } } } },
+      "post": { "summary": "Create an appointment", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Appointment" } } } }, "responses": { "201": { "description": "Appointment created" } } }
+    },
+    "/notifications": {
+      "get": { "summary": "Get all notifications", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of notifications", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Notification" } } } } } } } },
+      "post": { "summary": "Create a notification", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Notification" } } } }, "responses": { "201": { "description": "Notification created" } } }
+    },
+    "/academic-events": {
+      "get": { "summary": "Get all academic events", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of academic events", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/AcademicEvent" } } } } } } } },
+      "post": { "summary": "Create an academic event", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AcademicEvent" } } } }, "responses": { "201": { "description": "Academic event created" } } }
+    },
+    "/assessments": {
+      "get": { "summary": "Get all assessments", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of assessments", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Assessment" } } } } } } } },
+      "post": { "summary": "Create an assessment", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Assessment" } } } }, "responses": { "201": { "description": "Assessment created" } } }
+    },
+    "/cbt-questions": {
+      "get": { "summary": "Get all CBT questions", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of CBT questions", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/CBTQuestion" } } } } } } } },
+      "post": { "summary": "Create a CBT question", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CBTQuestion" } } } }, "responses": { "201": { "description": "CBT question created" } } }
+    },
+    "/discharges": {
+      "get": { "summary": "Get all discharges", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of discharges", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Discharge" } } } } } } } },
+      "post": { "summary": "Create a discharge", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Discharge" } } } }, "responses": { "201": { "description": "Discharge created" } } }
+    },
+    "/discharge-summaries": {
+      "get": { "summary": "Get all discharge summaries", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of discharge summaries", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/DischargeSummary" } } } } } } } },
+      "post": { "summary": "Create a discharge summary", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DischargeSummary" } } } }, "responses": { "201": { "description": "Discharge summary created" } } }
+    },
+    "/scores": {
+      "get": { "summary": "Get all scores", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "List of scores", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Score" } } } } } } } },
+      "post": { "summary": "Create a score", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Score" } } } }, "responses": { "201": { "description": "Score created" } } }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Patient": { "type": "object", "properties": { "id": { "type": "integer" }, "name": { "type": "string" }, "dob": { "type": "string", "format": "date" }, "gender": { "type": "string" }, "inpatient": { "type": "boolean" }, "date_registered": { "type": "string", "format": "date-time" }, "consultant_id": { "type": "integer" } } },
+      "ClinicalEvaluation": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "summary": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } },
+      "Diagnosis": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "diagnosis": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } },
+      "TreatmentPlan": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "plan": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } },
+      "LabInvestigation": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "investigation": { "type": "string" }, "result": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } },
+      "ImagingInvestigation": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "investigation": { "type": "string" }, "result": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } },
+      "WoundCarePlan": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "plan": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } },
+      "SurgeryBooking": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "surgery_type": { "type": "string" }, "date_booked": { "type": "string", "format": "date-time" }, "scheduled_date": { "type": "string", "format": "date-time" } } },
+      "Appointment": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "date": { "type": "string", "format": "date-time" }, "purpose": { "type": "string" } } },
+      "Notification": { "type": "object", "properties": { "id": { "type": "integer" }, "user_id": { "type": "integer" }, "message": { "type": "string" }, "is_read": { "type": "boolean" }, "created_at": { "type": "string", "format": "date-time" } } },
+      "AcademicEvent": { "type": "object", "properties": { "id": { "type": "integer" }, "title": { "type": "string" }, "description": { "type": "string" }, "event_date": { "type": "string", "format": "date-time" }, "created_at": { "type": "string", "format": "date-time" } } },
+      "Assessment": { "type": "object", "properties": { "id": { "type": "integer" }, "user_id": { "type": "integer" }, "scheduled_date": { "type": "string", "format": "date-time" }, "completed": { "type": "boolean" }, "score": { "type": "integer" } } },
+      "CBTQuestion": { "type": "object", "properties": { "id": { "type": "integer" }, "diagnosis": { "type": "string" }, "question": { "type": "string" }, "option_a": { "type": "string" }, "option_b": { "type": "string" }, "option_c": { "type": "string" }, "option_d": { "type": "string" }, "option_e": { "type": "string" }, "correct_option": { "type": "string" } } },
+      "Discharge": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "date": { "type": "string", "format": "date-time" }, "discharged_by": { "type": "integer" }, "summary_id": { "type": "integer" } } },
+      "DischargeSummary": { "type": "object", "properties": { "id": { "type": "integer" }, "patient_id": { "type": "integer" }, "summary_text": { "type": "string" }, "created_at": { "type": "string", "format": "date-time" } } },
+      "Score": { "type": "object", "properties": { "id": { "type": "integer" }, "user_id": { "type": "integer" }, "assessment_id": { "type": "integer" }, "value": { "type": "integer" }, "created_at": { "type": "string", "format": "date-time" } } }
+    },
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Plastic Surgery EMR API",
+    "version": "1.0.0",
+    "description": "API documentation for all EMR endpoints."
+  },
+  "servers": [
+    { "url": "http://localhost:5000/api" }
+  ],
+  "paths": {
+    "/patients": {
+      "get": {
+        "summary": "Get all patients",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of patients",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Patient" } }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new patient",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Patient" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Patient created" }
+        }
+      }
+    }
+    // Add other endpoints here
+  },
+  "components": {
+    "schemas": {
+      "Patient": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "dob": { "type": "string", "format": "date" },
+          "gender": { "type": "string" },
+          "inpatient": { "type": "boolean" },
+          "date_registered": { "type": "string", "format": "date-time" },
+          "consultant_id": { "type": "integer" }
+        }
+      }
+      // Add other model schemas here
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

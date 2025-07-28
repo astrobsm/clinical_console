@@ -1,0 +1,151 @@
+from backend.app import db
+from datetime import datetime
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.String(32), nullable=False)  # consultant, senior_registrar, registrar, house_officer, admin
+    name = db.Column(db.String(120), nullable=False)
+    rotation_end = db.Column(db.DateTime, nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+    # Relationships
+    patients = db.relationship('Patient', backref='assigned_consultant', lazy=True, foreign_keys='Patient.consultant_id')
+
+class Patient(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    dob = db.Column(db.Date, nullable=True)
+    gender = db.Column(db.String(16), nullable=True)
+    inpatient = db.Column(db.Boolean, default=False)
+    date_registered = db.Column(db.DateTime, default=datetime.utcnow)
+    consultant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    senior_registrar_id = db.Column(db.Integer, nullable=True)
+    registrar_id = db.Column(db.Integer, nullable=True)
+    house_officer_id = db.Column(db.Integer, nullable=True)
+    # Add more fields as needed
+
+class ClinicalEvaluation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    summary = db.Column(db.Text, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Diagnosis(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    diagnosis = db.Column(db.String(256), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class TreatmentPlan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    plan = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class LabInvestigation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    investigation = db.Column(db.String(256), nullable=False)
+    result = db.Column(db.Text, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class ImagingInvestigation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    investigation = db.Column(db.String(256), nullable=False)
+    result = db.Column(db.Text, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class WoundCarePlan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    plan = db.Column(db.Text, nullable=True)  # Deprecated, use dressing_protocol
+    dressing_protocol = db.Column(db.Text, nullable=True)
+    phase = db.Column(db.String(32), nullable=True)
+    comorbidities = db.Column(db.Text, nullable=True)  # Store as comma-separated or JSON string
+    images = db.Column(db.Text, nullable=True)  # Store as JSON string of image URLs/filenames
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class SurgeryBooking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    surgery_type = db.Column(db.String(128), nullable=False)
+    date_booked = db.Column(db.DateTime, default=datetime.utcnow)
+    scheduled_date = db.Column(db.DateTime, nullable=True)
+    clinical_images = db.Column(db.Text, nullable=True)  # Store as JSON string or comma-separated URLs
+    admission_type = db.Column(db.String(16), nullable=True)  # 'day_case' or 'inpatient'
+    ward = db.Column(db.String(64), nullable=True)  # Ward where patient is admitted
+    indications = db.Column(db.Text, nullable=True)
+    requirements = db.Column(db.Text, nullable=True)  # Store as comma-separated or JSON string
+    anaesthesia_type = db.Column(db.String(64), nullable=True)
+    position = db.Column(db.String(64), nullable=True)
+    estimated_duration = db.Column(db.Float, nullable=True)  # in hours
+    comorbidities = db.Column(db.Text, nullable=True)  # Store as comma-separated or JSON string
+
+class Appointment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    purpose = db.Column(db.String(256), nullable=True)
+
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    message = db.Column(db.String(256), nullable=False)
+    is_read = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class AcademicEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(256), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    event_date = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    topics = db.Column(db.Text, nullable=True)  # Comma-separated or JSON list of topics
+    moderator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    presenter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    meet_link = db.Column(db.String(512), nullable=True)
+    auto_generated = db.Column(db.Boolean, default=False)
+
+class Assessment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    scheduled_date = db.Column(db.DateTime, nullable=False)
+    completed = db.Column(db.Boolean, default=False)
+    score = db.Column(db.Integer, nullable=True)
+
+class CBTQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    diagnosis = db.Column(db.String(256), nullable=False)
+    question = db.Column(db.Text, nullable=False)
+    option_a = db.Column(db.String(256), nullable=False)
+    option_b = db.Column(db.String(256), nullable=False)
+    option_c = db.Column(db.String(256), nullable=False)
+    option_d = db.Column(db.String(256), nullable=False)
+    option_e = db.Column(db.String(256), nullable=False)
+    correct_option = db.Column(db.String(1), nullable=False)
+
+
+class Discharge(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    discharged_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    summary_id = db.Column(db.Integer, db.ForeignKey('discharge_summary.id'), nullable=True)
+
+class DischargeSummary(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    summary_text = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
+    value = db.Column(db.Integer, nullable=False)
+    percentage = db.Column(db.Float, nullable=True)
+    recommendation = db.Column(db.String(256), nullable=True)
+    advice = db.Column(db.String(256), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
