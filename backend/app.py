@@ -92,6 +92,11 @@ def create_app():
         else:
             return send_from_directory(app.static_folder, 'index.html')
 
+    # Health check endpoint
+    @app.route('/healthz')
+    def healthz():
+        return {"status": "ok"}, 200
+
     return app
 
 
