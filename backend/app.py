@@ -14,7 +14,7 @@ jwt = JWTManager()
 
 def create_app():
 
-    app = Flask(__name__, static_folder='static')
+    app = Flask(__name__, static_folder='frontend_build')
     # Start the CBT notification scheduler
     from backend.cbt_scheduler import start_scheduler
     start_scheduler(app)
