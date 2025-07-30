@@ -43,34 +43,34 @@ def create_app():
     app.register_blueprint(auth_bp)
     from backend.protected_example import bp as protected_bp
     app.register_blueprint(protected_bp)
-    from backend.patients import bp as patients_bp
+    from backend.api.patients import bp as patients_bp
     app.register_blueprint(patients_bp)
-    from backend.clinical import bp as clinical_bp
+    from backend.api.clinical import bp as clinical_bp
     app.register_blueprint(clinical_bp)
-    from backend.notifications import bp as notifications_bp
+    from backend.api.notifications import bp as notifications_bp
     app.register_blueprint(notifications_bp)
-    from backend.assessments import bp as assessments_bp
+    from backend.api.assessments import bp as assessments_bp
     app.register_blueprint(assessments_bp)
-    from backend.diagnosis import bp as diagnosis_bp
+    from backend.api.diagnosis import bp as diagnosis_bp
     app.register_blueprint(diagnosis_bp)
-    from backend.treatment import bp as treatment_bp
+    from backend.api.treatment import bp as treatment_bp
     app.register_blueprint(treatment_bp)
-    from backend.lab_investigation import bp as lab_investigation_bp
+    from backend.api.lab_investigation import bp as lab_investigation_bp
     app.register_blueprint(lab_investigation_bp)
-    from backend.imaging_investigation import bp as imaging_investigation_bp
+    from backend.api.imaging_investigation import bp as imaging_investigation_bp
     app.register_blueprint(imaging_investigation_bp)
-    from backend.wound_care import bp as wound_care_bp
+    from backend.api.wound_care import bp as wound_care_bp
     app.register_blueprint(wound_care_bp)
-    from backend.surgery_booking import bp as surgery_booking_bp
+    from backend.api.surgery_booking import bp as surgery_booking_bp
     app.register_blueprint(surgery_booking_bp)
-    from backend.appointment import bp as appointment_bp
+    from backend.api.appointment import bp as appointment_bp
     app.register_blueprint(appointment_bp)
     # Removed notification_api blueprint to resolve /api/notifications conflict
-    from backend.academic_event import bp as academic_event_bp
+    from backend.api.academic_event import bp as academic_event_bp
     app.register_blueprint(academic_event_bp)
-    from backend.assessment_api import bp as assessment_api_bp
+    from backend.api.assessment_api import bp as assessment_api_bp
     app.register_blueprint(assessment_api_bp)
-    from backend.cbt_question import bp as cbt_question_bp
+    from backend.api.cbt_question import bp as cbt_question_bp
     app.register_blueprint(cbt_question_bp)
     from backend.discharge_api import bp as discharge_api_bp
     app.register_blueprint(discharge_api_bp)
