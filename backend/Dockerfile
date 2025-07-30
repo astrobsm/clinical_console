@@ -1,7 +1,7 @@
 # backend/Dockerfile
 FROM python:3.11-slim
 WORKDIR /app/backend
-COPY . /app
+COPY . /app/backend
 RUN pip install --no-cache-dir -r requirements.txt
 RUN chmod +x entrypoint.sh
 ENV FLASK_APP=app.py
