@@ -19,3 +19,6 @@ alembic
 
 # For JSON/YAML parsing (if you use YAML for OpenAPI specs)
 PyYAML
+
+# For background scheduling
+apscheduler
