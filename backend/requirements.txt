@@ -1,3 +1,5 @@
+# For OpenAI API integration
+openai
 Flask>=2.2
 Flask-RESTful
 Flask-SQLAlchemy
