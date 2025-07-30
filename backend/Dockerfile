@@ -4,7 +4,8 @@ WORKDIR /app/backend
 COPY . .
 RUN pip uninstall -y flask || true && \
     pip install --upgrade pip && \
-    pip install --no-cache-dir --upgrade -r requirements.txt
+    pip install --no-cache-dir --upgrade -r requirements.txt && \
+    flask --version
 RUN chmod +x entrypoint.sh
 ENV FLASK_APP=app.py
 ENV PYTHONPATH=/app
