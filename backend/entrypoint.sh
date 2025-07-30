@@ -1,6 +1,11 @@
 #!/bin/sh
 # Entrypoint script to run DB migrations and start the Flask app
 
+echo "PATH at runtime: $PATH"
+which flask
+flask --version
+python3 -m flask --version
+
 # Run migrations
 /usr/local/bin/flask db upgrade
 
