@@ -21,9 +21,13 @@ RUN chmod +x entrypoint.sh
 ENV FLASK_APP=app.py
 ENV PYTHONPATH=/app
 
+
 # Add a healthcheck for the application
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget --spider -q http://localhost:8080/healthz || exit 1
+
+# Expose the Flask port
+EXPOSE 8080
 
 # Define the entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
