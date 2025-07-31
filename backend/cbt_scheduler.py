@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import current_app
 from backend.models import User
-from backend.notifications import send_notification
+from notifications import send_notification
 
 def notify_users():
     with current_app.app_context():
