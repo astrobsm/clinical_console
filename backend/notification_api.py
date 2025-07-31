@@ -1,6 +1,8 @@
+
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import db, Notification, User
+from notifications import send_notification, mark_notification_read, get_user_notifications
 
 bp = Blueprint('notification_api', __name__, url_prefix='/api/notifications')
 
@@ -17,10 +19,12 @@ def role_required(roles):
         return decorator
     return wrapper
 
+
 @bp.route('/', methods=['GET'])
 @jwt_required()
 def get_notifications():
-    notifications = Notification.query.all()
+    user_id = get_jwt_identity()
+    notifications = get_user_notifications(user_id)
     return jsonify([{
         'id': n.id,
         'user_id': n.user_id,
@@ -29,18 +33,15 @@ def get_notifications():
         'created_at': n.created_at.isoformat() if n.created_at else None
     } for n in notifications])
 
+
 @bp.route('/', methods=['POST'])
 @role_required(['admin'])
 def create_notification():
     data = request.get_json()
-    notification = Notification(
+    notification = send_notification(
         user_id=data.get('user_id'),
-        message=data.get('message'),
-        is_read=data.get('is_read', False),
-        created_at=data.get('created_at')
+        message=data.get('message')
     )
-    db.session.add(notification)
-    db.session.commit()
     return jsonify({'msg': 'Notification created', 'id': notification.id}), 201
 
 @bp.route('/<int:notification_id>', methods=['GET'])
@@ -55,14 +56,16 @@ def get_notification(notification_id):
         'created_at': notification.created_at.isoformat() if notification.created_at else None
     })
 
+
 @bp.route('/<int:notification_id>', methods=['PUT'])
 @role_required(['admin'])
 def update_notification(notification_id):
-    notification = Notification.query.get_or_404(notification_id)
     data = request.get_json()
+    notification = Notification.query.get_or_404(notification_id)
     notification.message = data.get('message', notification.message)
-    notification.is_read = data.get('is_read', notification.is_read)
     notification.created_at = data.get('created_at', notification.created_at)
+    if data.get('is_read'):
+        mark_notification_read(notification_id)
     db.session.commit()
     return jsonify({'msg': 'Notification updated'})
 
