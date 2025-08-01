@@ -15,12 +15,7 @@ jwt = JWTManager()
 def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
-    # Start the CBT notification scheduler
-    from backend.cbt_scheduler import start_scheduler
-    start_scheduler(app)
-    from backend.cbt_api import bp as cbt_api_bp
-    app.register_blueprint(cbt_api_bp)
-
+    # Configure the app first
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:natiss_natiss@localhost:5432/clinical_db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -32,6 +27,12 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
     CORS(app)
+
+    # Start the CBT notification scheduler after app is configured
+    from backend.cbt_scheduler import start_scheduler
+    start_scheduler(app)
+    from backend.cbt_api import bp as cbt_api_bp
+    app.register_blueprint(cbt_api_bp)
 
     # Register blueprints
 
@@ -47,8 +48,6 @@ def create_app():
     app.register_blueprint(patients_bp)
     from backend.api.clinical import bp as clinical_bp
     app.register_blueprint(clinical_bp)
-    from backend.api.notifications import bp as notifications_bp
-    app.register_blueprint(notifications_bp)
     from backend.api.assessments import bp as assessments_bp
     app.register_blueprint(assessments_bp)
     from backend.api.diagnosis import bp as diagnosis_bp
@@ -65,7 +64,8 @@ def create_app():
     app.register_blueprint(surgery_booking_bp)
     from backend.api.appointment import bp as appointment_bp
     app.register_blueprint(appointment_bp)
-    # Removed notification_api blueprint to resolve /api/notifications conflict
+    from backend.notification_api import bp as notification_api_bp
+    app.register_blueprint(notification_api_bp)
     from backend.api.academic_event import bp as academic_event_bp
     app.register_blueprint(academic_event_bp)
     from backend.api.assessment_api import bp as assessment_api_bp

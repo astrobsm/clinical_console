@@ -8,6 +8,7 @@ Flask-Migrate
 psycopg2-binary
 Flask-JWT-Extended
 Flask-Cors
+Flask-Mail
 python-dotenv
 
 # For Swagger UI

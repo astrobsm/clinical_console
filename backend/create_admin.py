@@ -1,8 +1,8 @@
 import os
 from flask import Flask
 from werkzeug.security import generate_password_hash
-from models import db, User
-from app import create_app
+from backend.models import db, User
+from backend.app import create_app
 
 ADMIN_EMAIL = "sylvia4douglas@gmail.com"
 ADMIN_PASSWORD = "natiss_natiss"

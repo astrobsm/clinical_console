@@ -1,10 +1,12 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import current_app
-from backend.models import User
-from notifications import send_notification
 
 def notify_users():
     with current_app.app_context():
+        # Import inside the function to avoid circular imports
+        from backend.models import User
+        from backend.notifications import send_notification
+        
         users = User.query.filter(User.role.in_(['senior_registrar', 'registrar', 'house_officer'])).all()
         for user in users:
             send_notification(user.id, "CBT test is scheduled for 8am Tuesday. Please be prepared.")

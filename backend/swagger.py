@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
 
 SWAGGER_URL = '/api/docs'
@@ -14,11 +14,8 @@ swaggerui_bp = get_swaggerui_blueprint(
 
 bp = Blueprint('swagger', __name__)
 bp.register_blueprint(swaggerui_bp, url_prefix=SWAGGER_URL)
-from flask import Blueprint, jsonify
 
-bp = Blueprint('swagger', __name__, url_prefix='/api/docs')
-
-@bp.route('/', methods=['GET'])
+@bp.route('/docs', methods=['GET'])
 def docs():
     return jsonify({
         'info': {
