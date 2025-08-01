@@ -21,7 +21,14 @@ def create_app():
     from backend.models import User, Patient, ClinicalEvaluation, Diagnosis, TreatmentPlan, LabInvestigation, ImagingInvestigation, WoundCarePlan, SurgeryBooking, Appointment, Notification, AcademicEvent, Assessment, CBTQuestion, Discharge, DischargeSummary, Score
     migrate.init_app(app, db)
     jwt.init_app(app)
-    CORS(app)
+    
+    # Configure CORS to allow your DigitalOcean domain
+    CORS(app, origins=[
+        "http://localhost:3000",  # Local development
+        "http://localhost:5000",  # Local Flask
+        "https://clinicalguru-36y53.ondigitalocean.app",  # Your DigitalOcean frontend
+        "http://clinicalguru-36y53.ondigitalocean.app",   # HTTP version
+    ], supports_credentials=True)
 
     # Start the CBT notification scheduler after app is configured
     from backend.cbt_scheduler import start_scheduler
@@ -99,4 +106,6 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    app.run(host="0.0.0.0", port=port, debug=debug)

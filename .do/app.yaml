@@ -1,0 +1,28 @@
+name: clinical-console-backend
+services:
+- name: backend
+  source_dir: /
+  github:
+    repo: astrobsm/clinical_console
+    branch: main
+  run_command: cd backend && gunicorn --bind 0.0.0.0:$PORT app:app
+  environment_slug: python
+  instance_count: 1
+  instance_size_slug: basic-xs
+  http_port: 5000
+  envs:
+  - key: DATABASE_URL
+    scope: RUN_TIME
+    type: SECRET
+  - key: SECRET_KEY
+    scope: RUN_TIME  
+    type: SECRET
+  - key: JWT_SECRET_KEY
+    scope: RUN_TIME
+    type: SECRET
+  - key: OPENAI_API_KEY
+    scope: RUN_TIME
+    type: SECRET
+  - key: FLASK_ENV
+    scope: RUN_TIME
+    value: production
