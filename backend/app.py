@@ -98,10 +98,15 @@ def create_app():
     from backend.dashboard_api import bp as dashboard_api_bp
     app.register_blueprint(dashboard_api_bp)
 
-    # Serve React static files
+    # Serve React static files - only for non-API paths
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve_react(path):
+        # Don't intercept API routes
+        if path.startswith('api/'):
+            from flask import abort
+            abort(404)
+        
         if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
             return send_from_directory(app.static_folder, path)
         else:
