@@ -113,6 +113,18 @@ def create_app():
     def healthz():
         return {"status": "ok"}, 200
 
+    @app.route('/api/routes')
+    def list_routes():
+        """Debug endpoint to show all registered routes"""
+        routes = []
+        for rule in app.url_map.iter_rules():
+            routes.append({
+                'endpoint': rule.endpoint,
+                'methods': list(rule.methods),
+                'rule': str(rule)
+            })
+        return jsonify(routes)
+
     return app
 
 
