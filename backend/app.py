@@ -108,7 +108,8 @@ def create_app():
             return send_from_directory(app.static_folder, 'index.html')
 
     # Health check endpoint
-    @app.route('/healthz')
+    @app.route('/api/healthz')
+    @app.route('/healthz')  # Keep both for compatibility
     def healthz():
         return {"status": "ok"}, 200
 
