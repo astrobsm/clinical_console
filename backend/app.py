@@ -30,12 +30,15 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
     
-    # Configure CORS to allow your DigitalOcean domain
+    # Configure CORS to allow your DigitalOcean domain and network access
     CORS(app, origins=[
         "http://localhost:3000",  # Local development
         "http://localhost:5000",  # Local Flask
+        "http://192.168.0.199:3000",  # Network development
+        "http://192.168.0.199:5000",  # Network Flask
         "https://clinicalguru-36y53.ondigitalocean.app",  # Your DigitalOcean frontend
         "http://clinicalguru-36y53.ondigitalocean.app",   # HTTP version
+        "*"  # Allow all origins for development (remove in production)
     ], supports_credentials=True)
 
     # Start the CBT notification scheduler after app is configured
