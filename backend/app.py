@@ -1,7 +1,8 @@
 
 import os
 import sys
-from flask import Flask, send_from_directory
+from datetime import datetime
+from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 
@@ -103,6 +104,15 @@ def create_app():
     @app.route('/healthz')  # Keep both for compatibility
     def healthz():
         return {"status": "ok"}, 200
+
+    @app.route('/api/test', methods=['GET', 'POST'])
+    def api_test():
+        """Simple test endpoint"""
+        return jsonify({
+            'message': 'API is working!',
+            'method': request.method,
+            'timestamp': str(datetime.now())
+        })
 
     @app.route('/api/routes')
     def list_routes():
