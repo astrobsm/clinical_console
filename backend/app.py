@@ -1,8 +1,16 @@
 
 import os
+import sys
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
+
+# Add the parent directory to Python path so we can import backend modules
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
 from backend.database import db, migrate, jwt
 
 load_dotenv()
