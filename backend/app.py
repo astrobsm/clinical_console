@@ -1,16 +1,11 @@
 
 import os
 from flask import Flask, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from dotenv import load_dotenv
+from backend.database import db, migrate, jwt
 
 load_dotenv()
-db = SQLAlchemy()
-migrate = Migrate()
-jwt = JWTManager()
 
 def create_app():
 
@@ -104,4 +99,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
