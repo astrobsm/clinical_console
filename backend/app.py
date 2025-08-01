@@ -38,6 +38,8 @@ def create_app():
         "http://192.168.0.199:5000",  # Network Flask
         "https://clinicalguru-36y53.ondigitalocean.app",  # Your DigitalOcean frontend
         "http://clinicalguru-36y53.ondigitalocean.app",   # HTTP version
+        "https://clinical-console-backend-cqk2r.ondigitalocean.app",  # Backend domain
+        "http://clinical-console-backend-cqk2r.ondigitalocean.app",   # Backend HTTP
         "*"  # Allow all origins for development (remove in production)
     ], supports_credentials=True)
 
