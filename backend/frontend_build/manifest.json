@@ -1,11 +1,23 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "PLASTIC SURG-DIRECTORY",
+  "name": "PLASTIC SURG-DIRECTORY - Medical Practice Management System",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "app_icon.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "app_icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     },
     {
       "src": "logo192.png",
@@ -21,5 +33,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#0a2342",
-  "background_color": "#caf0f8"
+  "background_color": "#caf0f8",
+  "description": "Comprehensive EMR system for plastic surgery unit management"
 }
