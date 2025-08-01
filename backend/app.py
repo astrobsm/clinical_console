@@ -98,21 +98,7 @@ def create_app():
     from backend.dashboard_api import bp as dashboard_api_bp
     app.register_blueprint(dashboard_api_bp)
 
-    # Serve React static files - only for non-API paths
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def serve_react(path):
-        # Don't intercept API routes
-        if path.startswith('api/'):
-            from flask import abort
-            abort(404)
-        
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
-        else:
-            return send_from_directory(app.static_folder, 'index.html')
-
-    # Health check endpoint
+    # Health check endpoint - must be before catch-all
     @app.route('/api/healthz')
     @app.route('/healthz')  # Keep both for compatibility
     def healthz():
@@ -129,6 +115,19 @@ def create_app():
                 'rule': str(rule)
             })
         return jsonify(routes)
+
+    # Serve React static files - LAST, after all API routes
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_react(path):
+        # Explicitly block API paths - they should already be handled above
+        if path.startswith('api/'):
+            return jsonify({'error': 'API route not found'}), 404
+        
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return send_from_directory(app.static_folder, path)
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
 
     return app
 
