@@ -19,7 +19,34 @@ load_dotenv()
 def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
-    # Configure the app first
+    
+    # Critical API routes FIRST - before everything else
+    @app.route('/api/healthz', methods=['GET'])
+    def healthz():
+        return jsonify({"status": "ok"}), 200
+
+    @app.route('/api/test', methods=['GET', 'POST'])
+    def api_test():
+        """Simple test endpoint"""
+        return jsonify({
+            'message': 'API is working!',
+            'method': request.method,
+            'timestamp': str(datetime.now())
+        }), 200
+
+    @app.route('/api/routes', methods=['GET'])
+    def list_routes():
+        """Debug endpoint to show all registered routes"""
+        routes = []
+        for rule in app.url_map.iter_rules():
+            routes.append({
+                'endpoint': rule.endpoint,
+                'methods': list(rule.methods),
+                'rule': str(rule)
+            })
+        return jsonify(routes), 200
+    
+    # Configure the app
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:natiss_natiss@localhost:5432/clinical_db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -98,33 +125,6 @@ def create_app():
 
     from backend.dashboard_api import bp as dashboard_api_bp
     app.register_blueprint(dashboard_api_bp)
-
-    # Health check endpoint - must be before catch-all
-    @app.route('/api/healthz')
-    @app.route('/healthz')  # Keep both for compatibility
-    def healthz():
-        return {"status": "ok"}, 200
-
-    @app.route('/api/test', methods=['GET', 'POST'])
-    def api_test():
-        """Simple test endpoint"""
-        return jsonify({
-            'message': 'API is working!',
-            'method': request.method,
-            'timestamp': str(datetime.now())
-        })
-
-    @app.route('/api/routes')
-    def list_routes():
-        """Debug endpoint to show all registered routes"""
-        routes = []
-        for rule in app.url_map.iter_rules():
-            routes.append({
-                'endpoint': rule.endpoint,
-                'methods': list(rule.methods),
-                'rule': str(rule)
-            })
-        return jsonify(routes)
 
     # Serve React static files - LAST, after all API routes
     @app.route('/', defaults={'path': ''})
