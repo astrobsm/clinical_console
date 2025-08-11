@@ -21,14 +21,26 @@ load_dotenv()
 def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
-    # Automatically run migrations on startup
+    CORS(app, supports_credentials=True, origins=["https://clinicalguru-36y53.ondigitalocean.app"])
+    # Configure the app
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:natiss_natiss@localhost:5432/clinical_db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+
+    db.init_app(app)
+    # Import all models so Alembic can detect them for migrations
+    from backend.models import User, Patient, ClinicalEvaluation, Diagnosis, TreatmentPlan, LabInvestigation, ImagingInvestigation, WoundCarePlan, SurgeryBooking, Appointment, Notification, AcademicEvent, Assessment, CBTQuestion, Discharge, DischargeSummary, Score
+    migrate.init_app(app, db)
+    jwt.init_app(app)
+
+    # Automatically run migrations on startup (after app/db/model setup)
     try:
         with app.app_context():
             upgrade()
         print("Database migrations applied successfully.")
     except Exception as e:
         print(f"Migration error: {e}")
-    CORS(app, supports_credentials=True, origins=["https://clinicalguru-36y53.ondigitalocean.app"])
     
     # Critical API routes FIRST - before everything else
     @app.route('/api/healthz', methods=['GET'])
