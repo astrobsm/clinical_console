@@ -3,8 +3,7 @@ import os
 import sys
 from datetime import datetime
 from flask import Flask, send_from_directory, request, jsonify
-from flask_migrate import upgrade
-from flask_cors import CORS
+from flask_migrate import Migrate, upgrade
 from flask_cors import CORS
 from dotenv import load_dotenv
 
@@ -21,26 +20,28 @@ load_dotenv()
 def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
-    CORS(app, supports_credentials=True, origins=["https://clinicalguru-36y53.ondigitalocean.app"])
+    
     # Configure the app
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:natiss_natiss@localhost:5432/clinical_db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
+    # Initialize extensions
     db.init_app(app)
     # Import all models so Alembic can detect them for migrations
     from backend.models import User, Patient, ClinicalEvaluation, Diagnosis, TreatmentPlan, LabInvestigation, ImagingInvestigation, WoundCarePlan, SurgeryBooking, Appointment, Notification, AcademicEvent, Assessment, CBTQuestion, Discharge, DischargeSummary, Score
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # Automatically run migrations on startup (after app/db/model setup)
+    # Automatically create tables and handle migrations for production
     try:
         with app.app_context():
-            upgrade()
-        print("Database migrations applied successfully.")
+            # Create all tables if they don't exist (for production deployment)
+            db.create_all()
+            print("Database tables ensured.")
     except Exception as e:
-        print(f"Migration error: {e}")
+        print(f"Database setup error: {e}")
     
     # Critical API routes FIRST - before everything else
     @app.route('/api/healthz', methods=['GET'])
@@ -67,18 +68,6 @@ def create_app():
                 'rule': str(rule)
             })
         return jsonify(routes), 200
-    
-    # Configure the app
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:natiss_natiss@localhost:5432/clinical_db')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-
-    db.init_app(app)
-    # Import all models so Alembic can detect them for migrations
-    from backend.models import User, Patient, ClinicalEvaluation, Diagnosis, TreatmentPlan, LabInvestigation, ImagingInvestigation, WoundCarePlan, SurgeryBooking, Appointment, Notification, AcademicEvent, Assessment, CBTQuestion, Discharge, DischargeSummary, Score
-    migrate.init_app(app, db)
-    jwt.init_app(app)
     
     # Configure CORS to allow your DigitalOcean domain and network access
     CORS(app, origins=[
@@ -164,10 +153,11 @@ def create_app():
     return app
 
 
-# Expose app for import by tests and other modules
-app = create_app()
+
+# Expose only the factory for Flask CLI and tests
 
 if __name__ == "__main__":
+    app = create_app()
     port = int(os.environ.get('PORT', 8080))
     debug = os.environ.get('FLASK_ENV') != 'production'
     app.run(host="0.0.0.0", port=port, debug=debug)
