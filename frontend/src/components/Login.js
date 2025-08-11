@@ -2,24 +2,23 @@ import React, { useState } from 'react';
 import { authFetch } from '../utils/api';
 
 function Login({ onLogin }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await authFetch('/api/auth/login', {
+      const data = await authFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
       });
-      const data = await res.json();
-      if (res.ok && data.access_token) {
+      if (data && data.access_token) {
         localStorage.setItem('jwt', data.access_token);
-        onLogin();
+        onLogin(data);
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.msg || 'Login failed');
       }
     } catch {
       setError('Network error');
@@ -28,7 +27,7 @@ function Login({ onLogin }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" required />
+      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
       <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
       <button type="submit">Login</button>
       {error && <div style={{color:'red'}}>{error}</div>}

@@ -4,6 +4,7 @@ import sys
 from datetime import datetime
 from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 # Add the parent directory to Python path so we can import backend modules
@@ -19,6 +20,7 @@ load_dotenv()
 def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
+    CORS(app, supports_credentials=True, origins=["https://clinicalguru-36y53.ondigitalocean.app"])
     
     # Critical API routes FIRST - before everything else
     @app.route('/api/healthz', methods=['GET'])

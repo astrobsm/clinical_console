@@ -39,20 +39,20 @@ function App() {
   const [selected, setSelected] = useState('dashboard');
   const [auth, setAuth] = useState(() => {
     // Try to load token from localStorage
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwt');
     const user = localStorage.getItem('user');
     return token && user ? { token, user: JSON.parse(user) } : null;
   });
   const [showRegister, setShowRegister] = useState(false);
 
   const handleLogin = (data) => {
-    localStorage.setItem('token', data.access_token);
+    localStorage.setItem('jwt', data.access_token);
     localStorage.setItem('user', JSON.stringify(data.user));
     setAuth({ token: data.access_token, user: data.user });
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwt');
     localStorage.removeItem('user');
     setAuth(null);
   };
