@@ -23,7 +23,8 @@ def create_app():
     app = Flask(__name__, static_folder='frontend_build')
     # Automatically run migrations on startup
     try:
-        upgrade()
+        with app.app_context():
+            upgrade()
         print("Database migrations applied successfully.")
     except Exception as e:
         print(f"Migration error: {e}")
