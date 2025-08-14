@@ -74,8 +74,12 @@ class SurgeryBooking(db.Model):
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    purpose = db.Column(db.String(256), nullable=True)
+    scheduled_by = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
+    appointment_date = db.Column(db.DateTime, nullable=True)
+    appointment_type = db.Column(db.String(50), nullable=True)
+    status = db.Column(db.String(50), nullable=True)
+    notes = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -99,9 +103,10 @@ class AcademicEvent(db.Model):
 class Assessment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=False)
-    scheduled_date = db.Column(db.DateTime, nullable=False)
-    completed = db.Column(db.Boolean, default=False)
+    assessment_type = db.Column(db.String(100), nullable=True)
     score = db.Column(db.Integer, nullable=True)
+    responses = db.Column(db.JSON, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class CBTQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
