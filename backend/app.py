@@ -118,6 +118,14 @@ def create_app():
         debug_info['import_tests'] = import_tests
         debug_info['version'] = 'v1.1'  # Force rebuild
         
+        # Test actual API calls
+        try:
+            from backend.models import Patient
+            patient_count = Patient.query.count()
+            debug_info['patient_table'] = f'SUCCESS: {patient_count} patients found'
+        except Exception as e:
+            debug_info['patient_table'] = f'ERROR: {str(e)}'
+        
         return jsonify(debug_info)
     
     # Configure CORS to allow your DigitalOcean domain and network access
