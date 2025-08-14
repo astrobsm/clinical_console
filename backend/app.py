@@ -68,6 +68,13 @@ def create_app():
     def list_routes():
         """Debug endpoint to show all registered routes"""
         routes = []
+        for rule in app.url_map.iter_rules():
+            routes.append({
+                'endpoint': rule.endpoint,
+                'methods': list(rule.methods),
+                'rule': str(rule)
+            })
+        return jsonify(routes), 200
         
     @app.route('/api/debug', methods=['GET'])
     def debug_production():
@@ -95,13 +102,6 @@ def create_app():
             debug_info['database_connection'] = f'ERROR: {str(e)}'
         
         return jsonify(debug_info)
-        for rule in app.url_map.iter_rules():
-            routes.append({
-                'endpoint': rule.endpoint,
-                'methods': list(rule.methods),
-                'rule': str(rule)
-            })
-        return jsonify(routes), 200
     
     # Configure CORS to allow your DigitalOcean domain and network access
     CORS(app, origins=[
