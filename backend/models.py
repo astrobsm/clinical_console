@@ -19,11 +19,9 @@ class Patient(db.Model):
     dob = db.Column(db.Date, nullable=True)
     gender = db.Column(db.String(16), nullable=True)
     inpatient = db.Column(db.Boolean, default=False)
-    date_registered = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     consultant_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
-    senior_registrar_id = db.Column(db.Integer, nullable=True)
-    registrar_id = db.Column(db.Integer, nullable=True)
-    house_officer_id = db.Column(db.Integer, nullable=True)
+    # Note: removed senior_registrar_id, registrar_id, house_officer_id as they don't exist in DB
     # Add more fields as needed
 
 class ClinicalEvaluation(db.Model):
