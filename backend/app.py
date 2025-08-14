@@ -138,8 +138,9 @@ def create_app():
             'SurgeryBooking': 'surgery_booking',
             'TreatmentPlan': 'treatment_plan',
             'ImagingInvestigation': 'imaging_investigation',
-            'WoundCare': 'wound_care',
-            'AcademicEvent': 'academic_event'
+            'WoundCarePlan': 'wound_care',
+            'AcademicEvent': 'academic_event',
+            'Notification': 'notification'
         }
         
         for model_name, table_name in model_tests.items():
