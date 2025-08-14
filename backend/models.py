@@ -54,7 +54,7 @@ class ImagingInvestigation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
     investigation = db.Column(db.String(256), nullable=False)
-    result = db.Column(db.Text, nullable=True)
+    finding = db.Column(db.Text, nullable=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class WoundCarePlan(db.Model):
@@ -93,11 +93,9 @@ class AcademicEvent(db.Model):
     title = db.Column(db.String(256), nullable=False)
     description = db.Column(db.Text, nullable=True)
     event_date = db.Column(db.DateTime, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    topics = db.Column(db.Text, nullable=True)  # Comma-separated or JSON list of topics
     moderator_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
     presenter_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
-    meet_link = db.Column(db.String(512), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     auto_generated = db.Column(db.Boolean, default=False)
 
 class Assessment(db.Model):
