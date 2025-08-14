@@ -37,9 +37,10 @@ class Diagnosis(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class TreatmentPlan(db.Model):
+    __tablename__ = 'treatment'
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
-    plan = db.Column(db.Text, nullable=False)
+    treatment = db.Column(db.String(256), nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class LabInvestigation(db.Model):
@@ -57,30 +58,18 @@ class ImagingInvestigation(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class WoundCarePlan(db.Model):
+    __tablename__ = 'wound_care'
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
-    plan = db.Column(db.Text, nullable=True)  # Deprecated, use dressing_protocol
-    dressing_protocol = db.Column(db.Text, nullable=True)
-    phase = db.Column(db.String(32), nullable=True)
-    comorbidities = db.Column(db.Text, nullable=True)  # Store as comma-separated or JSON string
-    images = db.Column(db.Text, nullable=True)  # Store as JSON string of image URLs/filenames
+    care_given = db.Column(db.Text, nullable=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class SurgeryBooking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
-    surgery_type = db.Column(db.String(128), nullable=False)
-    date_booked = db.Column(db.DateTime, default=datetime.utcnow)
-    scheduled_date = db.Column(db.DateTime, nullable=True)
-    clinical_images = db.Column(db.Text, nullable=True)  # Store as JSON string or comma-separated URLs
-    admission_type = db.Column(db.String(16), nullable=True)  # 'day_case' or 'inpatient'
-    ward = db.Column(db.String(64), nullable=True)  # Ward where patient is admitted
-    indications = db.Column(db.Text, nullable=True)
-    requirements = db.Column(db.Text, nullable=True)  # Store as comma-separated or JSON string
-    anaesthesia_type = db.Column(db.String(64), nullable=True)
-    position = db.Column(db.String(64), nullable=True)
-    estimated_duration = db.Column(db.Float, nullable=True)  # in hours
-    comorbidities = db.Column(db.Text, nullable=True)  # Store as comma-separated or JSON string
+    surgery_type = db.Column(db.String(256), nullable=True)
+    date = db.Column(db.DateTime, nullable=True)
+    purpose = db.Column(db.String(256), nullable=True)
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
