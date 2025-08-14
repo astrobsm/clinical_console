@@ -1,0 +1,35 @@
+# EMAIL TO SEND TO YOUR DATABASE ADMINISTRATOR OR DIGITALOCEAN SUPPORT
+
+Subject: Database Schema Creation - Grant CREATE Privileges
+
+Hello,
+
+I need to create tables for my application deployed on DigitalOcean App Platform.
+
+Database Details:
+- Host: astrobsmvelvet-db-do-user-23752526-0.e.db.ondigitalocean.com
+- Database: plasticsurgunit_db
+- User: clinical_console
+
+Current Issue:
+My user "clinical_console" has "permission denied for schema public" when trying to CREATE TABLE.
+
+Request:
+Please either:
+1. Grant CREATE, ALTER, DROP privileges on schema public to user "clinical_console"
+2. Or provide admin credentials so I can create the required tables
+3. Or execute the attached SQL file (create_tables.sql) as an admin user
+
+The SQL file contains the database schema for a medical EMR system with proper tables for users, patients, appointments, etc.
+
+Alternative SQL to grant privileges:
+```sql
+GRANT CREATE ON SCHEMA public TO clinical_console;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO clinical_console;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO clinical_console;
+```
+
+Thank you for your assistance.
+
+Best regards,
+[Your Name]
