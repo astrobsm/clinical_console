@@ -96,7 +96,6 @@ class AcademicEvent(db.Model):
     moderator_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
     presenter_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    auto_generated = db.Column(db.Boolean, default=False)
 
 class Assessment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
