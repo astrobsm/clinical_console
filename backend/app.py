@@ -132,6 +132,23 @@ def create_app():
             debug_info['discharge_table'] = f'SUCCESS: {discharge_count} discharges found'
         except Exception as e:
             debug_info['discharge_table'] = f'ERROR: {str(e)}'
+            
+        # Test other models
+        model_tests = {
+            'SurgeryBooking': 'surgery_booking',
+            'TreatmentPlan': 'treatment_plan',
+            'ImagingInvestigation': 'imaging_investigation',
+            'WoundCare': 'wound_care',
+            'AcademicEvent': 'academic_event'
+        }
+        
+        for model_name, table_name in model_tests.items():
+            try:
+                model_class = getattr(__import__('backend.models', fromlist=[model_name]), model_name)
+                count = model_class.query.count()
+                debug_info[f'{table_name}_table'] = f'SUCCESS: {count} records found'
+            except Exception as e:
+                debug_info[f'{table_name}_table'] = f'ERROR: {str(e)}'
         
         return jsonify(debug_info)
     
