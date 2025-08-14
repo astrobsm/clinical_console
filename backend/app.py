@@ -101,7 +101,7 @@ def create_app():
         except Exception as e:
             debug_info['database_connection'] = f'ERROR: {str(e)}'
         
-        # Test imports
+        # Test imports - UPDATED VERSION
         import_tests = {}
         try:
             from backend.api.patients import bp as patients_bp
@@ -116,6 +116,7 @@ def create_app():
             import_tests['discharge_api'] = f'ERROR: {str(e)}'
             
         debug_info['import_tests'] = import_tests
+        debug_info['version'] = 'v1.1'  # Force rebuild
         
         return jsonify(debug_info)
     
