@@ -129,9 +129,10 @@ class CBTQuestion(db.Model):
 class Discharge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    discharged_by = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=False)
-    summary_id = db.Column(db.Integer, db.ForeignKey('discharge_summary.id'), nullable=True)
+    discharge_date = db.Column(db.DateTime, nullable=True)
+    follow_up_date = db.Column(db.DateTime, nullable=True)
+    discharge_summary = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class DischargeSummary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
