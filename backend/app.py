@@ -125,6 +125,13 @@ def create_app():
             debug_info['patient_table'] = f'SUCCESS: {patient_count} patients found'
         except Exception as e:
             debug_info['patient_table'] = f'ERROR: {str(e)}'
+            
+        try:
+            from backend.models import Discharge
+            discharge_count = Discharge.query.count()
+            debug_info['discharge_table'] = f'SUCCESS: {discharge_count} discharges found'
+        except Exception as e:
+            debug_info['discharge_table'] = f'ERROR: {str(e)}'
         
         return jsonify(debug_info)
     
