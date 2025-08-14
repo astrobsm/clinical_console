@@ -15,17 +15,24 @@ if parent_dir not in sys.path:
 
 from backend.database import db, migrate, jwt
 
-load_dotenv()
+# Load environment variables based on environment
+env_file = '.env.production' if os.getenv('FLASK_ENV') == 'production' else '.env'
+load_dotenv(env_file)
 
 def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
     
-    # Configure the app
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:natiss_natiss@localhost:5432/clinical_db')
+    # Configure the app with fallbacks for production
+    database_url = os.getenv('DATABASE_URL')
+    if not database_url:
+        # Fallback for production environment
+        database_url = 'postgresql://clinical_console:AVNS_tzTnBpgGSn7s9FjIeOn@astrobsmvelvet-db-do-user-23752526-0.e.db.ondigitalocean.com:25060/plasticsurgunit_db?sslmode=require'
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback-secret-key-for-production')
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'fallback-jwt-secret-key-for-production')
 
     # Initialize extensions
     db.init_app(app)
@@ -38,7 +45,7 @@ def create_app():
     try:
         with app.app_context():
             # Create all tables if they don't exist (for production deployment)
-            db.create_all()
+            # db.create_all()  # Commented out - tables created manually with admin privileges
             print("Database tables ensured.")
     except Exception as e:
         print(f"Database setup error: {e}")
@@ -61,6 +68,33 @@ def create_app():
     def list_routes():
         """Debug endpoint to show all registered routes"""
         routes = []
+        
+    @app.route('/api/debug', methods=['GET'])
+    def debug_production():
+        """Debug endpoint for production issues"""
+        import sys
+        debug_info = {
+            'python_version': sys.version,
+            'current_directory': os.getcwd(),
+            'environment_variables': {
+                'FLASK_ENV': os.getenv('FLASK_ENV'),
+                'DATABASE_URL': 'SET' if os.getenv('DATABASE_URL') else 'NOT SET',
+                'SECRET_KEY': 'SET' if os.getenv('SECRET_KEY') else 'NOT SET',
+                'JWT_SECRET_KEY': 'SET' if os.getenv('JWT_SECRET_KEY') else 'NOT SET',
+                'PORT': os.getenv('PORT'),
+            },
+            'database_config': app.config.get('SQLALCHEMY_DATABASE_URI', 'NOT SET')[:50] + '...',
+        }
+        
+        # Try database connection
+        try:
+            from backend.models import User
+            user_count = User.query.count()
+            debug_info['database_connection'] = f'SUCCESS: {user_count} users found'
+        except Exception as e:
+            debug_info['database_connection'] = f'ERROR: {str(e)}'
+        
+        return jsonify(debug_info)
         for rule in app.url_map.iter_rules():
             routes.append({
                 'endpoint': rule.endpoint,

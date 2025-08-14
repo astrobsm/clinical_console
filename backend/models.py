@@ -2,6 +2,7 @@ from backend.database import db
 from datetime import datetime
 
 class User(db.Model):
+    __tablename__ = 'clinical_users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
@@ -19,7 +20,7 @@ class Patient(db.Model):
     gender = db.Column(db.String(16), nullable=True)
     inpatient = db.Column(db.Boolean, default=False)
     date_registered = db.Column(db.DateTime, default=datetime.utcnow)
-    consultant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    consultant_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
     senior_registrar_id = db.Column(db.Integer, nullable=True)
     registrar_id = db.Column(db.Integer, nullable=True)
     house_officer_id = db.Column(db.Integer, nullable=True)
@@ -91,7 +92,7 @@ class Appointment(db.Model):
 
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=False)
     message = db.Column(db.String(256), nullable=False)
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -103,14 +104,14 @@ class AcademicEvent(db.Model):
     event_date = db.Column(db.DateTime, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     topics = db.Column(db.Text, nullable=True)  # Comma-separated or JSON list of topics
-    moderator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    presenter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    moderator_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
+    presenter_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=True)
     meet_link = db.Column(db.String(512), nullable=True)
     auto_generated = db.Column(db.Boolean, default=False)
 
 class Assessment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=False)
     scheduled_date = db.Column(db.DateTime, nullable=False)
     completed = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, nullable=True)
@@ -131,7 +132,7 @@ class Discharge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
-    discharged_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    discharged_by = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=False)
     summary_id = db.Column(db.Integer, db.ForeignKey('discharge_summary.id'), nullable=True)
 
 class DischargeSummary(db.Model):
@@ -142,7 +143,7 @@ class DischargeSummary(db.Model):
 
 class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('clinical_users.id'), nullable=False)
     assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
     value = db.Column(db.Integer, nullable=False)
     percentage = db.Column(db.Float, nullable=True)

@@ -40,25 +40,35 @@ def register():
 
 @bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-    if not email or not password:
-        return jsonify({'msg': 'Email and password required'}), 400
-    user = User.query.filter_by(email=email).first()
-    if not user or not check_password_hash(user.password, password):
-        return jsonify({'msg': 'Invalid credentials'}), 401
-    access_token = create_access_token(identity=str(user.id), additional_claims={
-        'role': user.role,
-        'name': user.name,
-        'email': user.email
-    })
-    return jsonify({
-        'access_token': access_token,
-        'user': {
-            'id': user.id,
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'msg': 'No JSON data provided'}), 400
+            
+        email = data.get('email')
+        password = data.get('password')
+        if not email or not password:
+            return jsonify({'msg': 'Email and password required'}), 400
+            
+        user = User.query.filter_by(email=email).first()
+        if not user or not check_password_hash(user.password, password):
+            return jsonify({'msg': 'Invalid credentials'}), 401
+            
+        access_token = create_access_token(identity=str(user.id), additional_claims={
+            'role': user.role,
             'name': user.name,
-            'email': user.email,
-            'role': user.role
-        }
-    })
+            'email': user.email
+        })
+        return jsonify({
+            'access_token': access_token,
+            'user': {
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'role': user.role
+            }
+        })
+    except Exception as e:
+        # Log the error and return a generic message
+        print(f"Login error: {str(e)}")
+        return jsonify({'msg': 'Internal server error', 'error': str(e)}), 500
