@@ -101,6 +101,22 @@ def create_app():
         except Exception as e:
             debug_info['database_connection'] = f'ERROR: {str(e)}'
         
+        # Test imports
+        import_tests = {}
+        try:
+            from backend.api.patients import bp as patients_bp
+            import_tests['patients_api'] = 'SUCCESS'
+        except Exception as e:
+            import_tests['patients_api'] = f'ERROR: {str(e)}'
+            
+        try:
+            from backend.discharge_api import bp as discharge_api_bp
+            import_tests['discharge_api'] = 'SUCCESS'
+        except Exception as e:
+            import_tests['discharge_api'] = f'ERROR: {str(e)}'
+            
+        debug_info['import_tests'] = import_tests
+        
         return jsonify(debug_info)
     
     # Configure CORS to allow your DigitalOcean domain and network access
