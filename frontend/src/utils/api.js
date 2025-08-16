@@ -3,7 +3,7 @@
 
 import { message } from 'antd';
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+const API_BASE = process.env.REACT_APP_API_BASE || 'https://clinicalguru-36y53.ondigitalocean.app';
 
 export async function authFetch(url, options = {}) {
   const token = localStorage.getItem('jwt');
