@@ -14,6 +14,7 @@ if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
 from backend.database import db, migrate, jwt
+from backend.ssl_config import get_ssl_database_url, verify_ssl_connection, get_ssl_status
 
 # Load environment variables based on environment
 env_file = '.env.production' if os.getenv('FLASK_ENV') == 'production' else '.env'
@@ -23,11 +24,8 @@ def create_app():
 
     app = Flask(__name__, static_folder='frontend_build')
     
-    # Configure the app with fallbacks for production
-    database_url = os.getenv('DATABASE_URL')
-    if not database_url:
-        # Fallback for production environment
-        database_url = 'postgresql://clinical_console:AVNS_tzTnBpgGSn7s9FjIeOn@astrobsmvelvet-db-do-user-23752526-0.e.db.ondigitalocean.com:25060/plasticsurgunit_db?sslmode=require'
+    # Configure the app with SSL-enabled database connection
+    database_url = get_ssl_database_url()
     
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -54,6 +52,12 @@ def create_app():
     @app.route('/api/healthz', methods=['GET'])
     def healthz():
         return jsonify({"status": "ok"}), 200
+
+    @app.route('/api/ssl-status', methods=['GET'])
+    def ssl_status():
+        """Check SSL connection status"""
+        status = get_ssl_status()
+        return jsonify(status), 200
 
     @app.route('/api/test', methods=['GET', 'POST'])
     def api_test():
