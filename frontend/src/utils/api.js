@@ -4,7 +4,7 @@
 import { message } from 'antd';
 
 // Force HTTPS and add debugging
-const API_BASE = process.env.REACT_APP_API_BASE || 'https://clinicalguru-36y53.ondigitalocean.app';
+const API_BASE = process.env.REACT_APP_API_BASE || 'https://plasticunth-z2jbu.ondigitalocean.app';
 
 // Ensure API_BASE is always HTTPS
 const SECURE_API_BASE = API_BASE.replace('http://', 'https://');

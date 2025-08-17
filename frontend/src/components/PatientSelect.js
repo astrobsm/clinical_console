@@ -13,9 +13,17 @@ const PatientSelect = ({ value, onChange }) => {
     setLoading(true);
     try {
       const data = await authFetch('/api/patients/');
-      setPatients(data);
+      console.log('Patients API response:', data); // Debug log
+      if (data && Array.isArray(data)) {
+        setPatients(data);
+      } else {
+        console.error('Invalid patients data received:', data);
+        setPatients([]);
+        message.error('Invalid patient data received');
+      }
     } catch (error) {
       console.error('Error fetching patients:', error);
+      setPatients([]);
       message.error('Failed to fetch patients');
     }
     setLoading(false);
