@@ -31,7 +31,7 @@ def get_patients():
             'dob': p.dob.isoformat() if p.dob else None,
             'gender': p.gender,
             'inpatient': p.inpatient,
-            'date_registered': p.created_at.isoformat() if p.created_at else None,
+            'created_at': p.created_at.isoformat() if p.created_at else None,
             'consultant_id': p.consultant_id
         } for p in patients])
     except Exception as e:
@@ -72,7 +72,7 @@ def get_patient(patient_id):
             'dob': patient.dob.isoformat() if patient.dob else None,
             'gender': patient.gender,
             'inpatient': patient.inpatient,
-            'date_registered': patient.created_at.isoformat() if patient.created_at else None,
+            'created_at': patient.created_at.isoformat() if patient.created_at else None,
             'consultant_id': patient.consultant_id
         })
     except Exception as e:

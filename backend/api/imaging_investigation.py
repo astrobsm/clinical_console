@@ -32,7 +32,7 @@ def get_imaging_investigations():
                 'dob': patient.dob.isoformat() if patient.dob else None,
                 'gender': patient.gender,
                 'inpatient': patient.inpatient,
-                'date_registered': patient.date_registered.isoformat() if patient.date_registered else None
+                'created_at': patient.created_at.isoformat() if patient.created_at else None
             }
         result.append({
             'id': i.id,
@@ -71,7 +71,7 @@ def get_imaging_investigation(investigation_id):
             'dob': patient.dob.isoformat() if patient.dob else None,
             'gender': patient.gender,
             'inpatient': patient.inpatient,
-            'date_registered': patient.date_registered.isoformat() if patient.date_registered else None
+            'created_at': patient.created_at.isoformat() if patient.created_at else None
         }
     return jsonify({
         'id': investigation.id,
@@ -134,7 +134,7 @@ def get_imaging_investigations():
                 'dob': patient.dob.isoformat() if patient.dob else None,
                 'gender': patient.gender,
                 'inpatient': patient.inpatient,
-                'date_registered': patient.date_registered.isoformat() if patient.date_registered else None
+                'created_at': patient.created_at.isoformat() if patient.created_at else None
             }
         result.append({
             'id': i.id,
@@ -173,7 +173,7 @@ def get_imaging_investigation(investigation_id):
             'dob': patient.dob.isoformat() if patient.dob else None,
             'gender': patient.gender,
             'inpatient': patient.inpatient,
-            'date_registered': patient.date_registered.isoformat() if patient.date_registered else None
+            'created_at': patient.created_at.isoformat() if patient.created_at else None
         }
     return jsonify({
         'id': investigation.id,
