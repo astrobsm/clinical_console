@@ -11,10 +11,9 @@ const Notifications = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await authFetch('/api/notifications/');
-      const data = await res.json();
-      if (res.ok) setItems(data);
-      else setError(data.msg || 'Failed to fetch notifications');
+      const data = await authFetch('/api/notifications/');
+      if (data) setItems(data);
+      else setError('Failed to fetch notifications');
     } catch (err) {
       setError('Server error');
     }

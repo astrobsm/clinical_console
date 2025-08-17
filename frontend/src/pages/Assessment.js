@@ -13,10 +13,9 @@ const Assessment = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await authFetch('/api/assessments/');
-      const data = await res.json();
-      if (res.ok) setItems(data);
-      else setError(data.msg || 'Failed to fetch assessments');
+      const data = await authFetch('/api/assessments/');
+      if (data) setItems(data);
+      else setError('Failed to fetch assessments');
     } catch (err) {
       setError('Server error');
     }

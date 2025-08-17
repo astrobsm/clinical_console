@@ -10,18 +10,16 @@ const Assessments = () => {
 
   const fetchAssessments = async () => {
     setLoading(true);
-    const res = await authFetch('/api/assessments/');
-    const data = await res.json();
-    if (res.ok) setAssessments(data);
+    const data = await authFetch('/api/assessments/');
+    if (data) setAssessments(data);
     setLoading(false);
   };
 
   useEffect(() => { fetchAssessments(); }, []);
 
   const startCBT = async () => {
-    const res = await authFetch('/api/assessments/cbt');
-    const data = await res.json();
-    if (res.ok) setCbt(data);
+    const data = await authFetch('/api/assessments/cbt');
+    if (data) setCbt(data);
   };
 
   const submitScore = async (assessment_id, value) => {

@@ -12,12 +12,11 @@ const PatientSelect = ({ value, onChange }) => {
   const fetchPatients = async () => {
     setLoading(true);
     try {
-      const res = await authFetch('/api/patients/');
-      const data = await res.json();
-      if (res.ok) setPatients(data);
-      else message.error('Failed to fetch patients');
-    } catch {
-      message.error('Server error');
+      const data = await authFetch('/api/patients/');
+      setPatients(data);
+    } catch (error) {
+      console.error('Error fetching patients:', error);
+      message.error('Failed to fetch patients');
     }
     setLoading(false);
   };

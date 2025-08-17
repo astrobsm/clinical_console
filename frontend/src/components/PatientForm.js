@@ -11,9 +11,8 @@ const PatientForm = ({ onSubmit, initial, onCancel, visible = true, onClose }) =
   // Helper to fetch users by role
   const fetchUsersByRole = async (role) => {
     try {
-      const res = await authFetch(`/api/auth/users?role=${role}`);
-      if (!res.ok) return [];
-      return await res.json();
+      const data = await authFetch(`/api/auth/users?role=${role}`);
+      return data || [];
     } catch {
       return [];
     }
@@ -42,8 +41,7 @@ const PatientForm = ({ onSubmit, initial, onCancel, visible = true, onClose }) =
       // Fetch all patients
       let patients = [];
       try {
-        const res = await authFetch('/api/patients');
-        if (res.ok) patients = await res.json();
+        patients = await authFetch('/api/patients') || [];
       } catch {}
 
       // Helper: get user with fewest patients for a role
