@@ -28,6 +28,8 @@ def get_appointments():
             'id': a.id,
             'patient_id': a.patient_id,
             'date': a.appointment_date.isoformat() if a.appointment_date else None,
+            'appointment_date': a.appointment_date.isoformat() if a.appointment_date else None,  # For API compatibility
+            'purpose': a.appointment_type,  # Map appointment_type to purpose for frontend compatibility
             'appointment_type': a.appointment_type,
             'status': a.status,
             'notes': a.notes,
@@ -49,21 +51,25 @@ def create_appointment():
         if not data.get('patient_id'):
             return jsonify({'msg': 'Patient ID is required'}), 400
             
-        if not data.get('appointment_date'):
+        # Accept both 'date' and 'appointment_date' for flexibility
+        appointment_date = data.get('appointment_date') or data.get('date')
+        if not appointment_date:
             return jsonify({'msg': 'Appointment date is required'}), 400
         
         # Parse date if it's a string
-        appointment_date = data.get('appointment_date')
         if isinstance(appointment_date, str):
             try:
                 appointment_date = datetime.fromisoformat(appointment_date.replace('Z', '+00:00'))
             except ValueError:
                 return jsonify({'msg': 'Invalid date format'}), 400
         
+        # Map purpose to appointment_type for backward compatibility
+        appointment_type = data.get('appointment_type') or data.get('purpose', 'General')
+        
         appointment = Appointment(
             patient_id=data.get('patient_id'),
             appointment_date=appointment_date,
-            appointment_type=data.get('appointment_type', 'General'),
+            appointment_type=appointment_type,
             status=data.get('status', 'Scheduled'),
             notes=data.get('notes'),
             scheduled_by=get_jwt_identity()
@@ -85,6 +91,8 @@ def get_appointment(appointment_id):
             'id': appointment.id,
             'patient_id': appointment.patient_id,
             'date': appointment.appointment_date.isoformat() if appointment.appointment_date else None,
+            'appointment_date': appointment.appointment_date.isoformat() if appointment.appointment_date else None,
+            'purpose': appointment.appointment_type,  # Map appointment_type to purpose for frontend compatibility
             'appointment_type': appointment.appointment_type,
             'status': appointment.status,
             'notes': appointment.notes,
@@ -104,16 +112,21 @@ def update_appointment(appointment_id):
         
         if 'patient_id' in data:
             appointment.patient_id = data['patient_id']
-        if 'appointment_date' in data:
-            appointment_date = data['appointment_date']
+        
+        # Accept both 'date' and 'appointment_date' for flexibility
+        if 'appointment_date' in data or 'date' in data:
+            appointment_date = data.get('appointment_date') or data.get('date')
             if isinstance(appointment_date, str):
                 try:
                     appointment_date = datetime.fromisoformat(appointment_date.replace('Z', '+00:00'))
                 except ValueError:
                     return jsonify({'msg': 'Invalid date format'}), 400
             appointment.appointment_date = appointment_date
-        if 'appointment_type' in data:
-            appointment.appointment_type = data['appointment_type']
+            
+        # Accept both 'appointment_type' and 'purpose' for flexibility  
+        if 'appointment_type' in data or 'purpose' in data:
+            appointment.appointment_type = data.get('appointment_type') or data.get('purpose')
+            
         if 'status' in data:
             appointment.status = data['status']
         if 'notes' in data:
